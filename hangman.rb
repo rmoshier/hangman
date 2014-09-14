@@ -1,15 +1,10 @@
+# In this cleaned up version, I deleted most of my notes. The ones I kept explain
+# (1) what each method does, in order to better understand the single responsibility
+# principle, and (2) explain what I am currently calling "level 2 logic", more advanced
+# logic.
 require 'colorize'
 
-# class Game #(player in here?)(everything that doesnt belong in hangman)
-#
-#
-# end
-
 class Hangman
-# next step needs to be breaking down board class and word class
-
- #don't need to initialize since nested class?
- #initialize = set up given attributes(in the from of instance variables), make data manipulation
 
   def initialize
    @word = "cat"
@@ -19,7 +14,7 @@ class Hangman
    letter_status
   end
 
-  def display_word
+  def display_word # makes and maintains 'letter slots'
     if @guessed_letters.empty?
       "_" * @word.length
     else
@@ -28,59 +23,44 @@ class Hangman
     end
   end
 
-  def letter_status #shows current letter status (which slots are filled)
-    # puts display_word
+  def letter_status # displays guessed letters
     puts "Letters guessed: " + @guessed_letters.sort.join(", ")
   end
 
-  def guess_letter #get letter guess from user
+  def guess_letter # retrieves letter guess from user
+                  # and runs a bunch of shit that should be elsewhere
+                  # will try to edit this down after next commit
     until winning || losing
       puts "What letter do you want to pick?"
       letter = gets.chomp
       if same_guess(letter)
         puts "#{'You\'ve already guessed that letter. Please pick another.'}".cyan
       end
-    # if letter
       evaluate_guess(letter)
-    # # else
-    # #   game_ends
-    # end
       picture_status
       letter_status
       guess_letter
-      # end
-    game_ends
+      game_ends
     end
   end
 
-  def evaluate_guess (letter) #evaluate guess by checking if guess is in @word
+  def evaluate_guess (letter) # evaluate guess by checking if guessed
+                              # letter is in @word
     @guessed_letters << letter
-    if @word.include?(letter) #this may not work b/c letter is instance variable
-      correct_status          #does this letter variable pull from guess_letter method?
+    if @word.include?(letter)
+      correct_status
       puts "#{'Correct!'.green}"
-      # puts "-" * 10
     else
       incorrect_status
       puts "#{'Incorrect!'.red}"
-      # puts "-" * 100
     end
   end
 
-  def same_guess(letter)
+  def same_guess(letter) # evaluates whether or not letter is in word
     @guessed_letters.include?(letter)
   end
 
-  #i'm evaluating letters against the @word, but i'm not doing anything with them
-  #put them in an array
-
-  def correct_status #shows current status + also need to add putting letters into --- structure!!!!
-    # @so_far = @word.chars << @guessed_list
-    # @so_far = @word.tr('^' + @guessed_list.join, '-')
-    # @so_far = @word.chars.each_with_index do |letter, index|
-    #   if guessed_letter == letter
-    #     @characters[index] = letter
-    #   end
-    # end
+  def correct_status # subs "_" with correct letter guesses
     @guessed_letters.each do |l|
       if @word.include?(l)
         @word.gsub("-", l)
@@ -89,8 +69,7 @@ class Hangman
     puts display_word
   end
 
-  def incorrect_status #shows current status and adds guess to @num_wrong
-    # puts @num_wrong
+  def incorrect_status # increases @num_wrong for each incorrect guess
     @num_wrong = 0
     @guessed_letters.each do |l|
       if not @word.include?(l)
@@ -98,18 +77,17 @@ class Hangman
       end
     end
     puts display_word
-    # puts @num_wrong
   end
 
-  def winning
+  def winning # defines winning
     display_word == @word
   end
 
-  def losing
+  def losing # defines losing
     @num_wrong == 3
   end
 
-  def picture_status #connects to @num_wrong and draws picture based on number wrong
+  def picture_status # draws picture based on @num_wrong
     if @num_wrong == 0
       puts "|     _________"
       puts "|     |/      |"
@@ -150,11 +128,9 @@ class Hangman
       puts "|     |      "
       puts "| ____|___   "
     end
-    # game_ends
-    # letter_status
   end
 
-  def game_ends #game ends when @word == @so_far
+  def game_ends # defines end of game
       if display_word == @word
         puts "#{'CONGRATULATIONS! YOU WON!'}".light_magenta.blink
       else
@@ -164,26 +140,4 @@ class Hangman
   end
 end
 
-# def run
-  # my_game = Hangman.new
-  # while true
-    # puts board
-    # puts guess
-    # puts "What letter would you like to guess?"
-    # guess = gets.chomp
-    # h.make_guess(guess)
-  # end
-# end
-
-# put the allication flow/logic here. call this method at end of game.
-
-# my_game = Game.new
-# run
 my_game = Hangman.new
-# evaluate_guess(letter)
-# picture_status
-# letter_status
-# guess_letter
-# game_ends
-# my_game = Game::Hangman.new
-# my_game = Hangman.guess_letter
