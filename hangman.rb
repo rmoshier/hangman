@@ -47,7 +47,6 @@ class Hangman
       evaluate_guess(letter)
       picture_status
       letter_status
-      guess_letter
       game_ends
     end
   end
@@ -105,7 +104,6 @@ class Hangman
       puts "|     |      "
       puts "|     |      "
       puts "|     |      "
-      puts "|     |      "
       puts "| ____|___   "
     end
     if @num_wrong == 2
@@ -128,6 +126,7 @@ class Hangman
       puts "|     |      "
       puts "| ____|___   "
     end
+    guess_letter
   end
 
   def game_ends # defines end of game
