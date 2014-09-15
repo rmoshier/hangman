@@ -1,7 +1,7 @@
 # In this cleaned up version, I deleted most of my notes. The ones I kept explain
 # (1) what each method does, in order to better understand the single responsibility
-# principle, and (2) explain what I am currently calling "level 2 logic", more advanced
-# logic.
+# principle, and (2) explain what I am currently calling "level 2 logic" (more advanced
+# logic).
 require 'colorize'
 
 class Hangman
@@ -27,7 +27,15 @@ class Hangman
     puts "Letters guessed: " + @guessed_letters.sort.join(", ")
   end
 
-  def guess_letter # retrieves letter guess from user
+  def winning # defines winning
+    display_word == @word
+  end
+
+  def losing # defines losing
+    @num_wrong == 3
+  end
+
+  def guess_letter# retrieves letter guess from user
                   # and runs a bunch of shit that should be elsewhere
                   # will try to edit this down after next commit
     until winning || losing
@@ -44,6 +52,10 @@ class Hangman
     end
   end
 
+  def same_guess(letter) # evaluates whether or not letter is in word
+    @guessed_letters.include?(letter)
+  end
+
   def evaluate_guess (letter) # evaluate guess by checking if guessed
                               # letter is in @word
     @guessed_letters << letter
@@ -54,10 +66,6 @@ class Hangman
       incorrect_status
       puts "#{'Incorrect!'.red}"
     end
-  end
-
-  def same_guess(letter) # evaluates whether or not letter is in word
-    @guessed_letters.include?(letter)
   end
 
   def correct_status # subs "_" with correct letter guesses
@@ -77,14 +85,6 @@ class Hangman
       end
     end
     puts display_word
-  end
-
-  def winning # defines winning
-    display_word == @word
-  end
-
-  def losing # defines losing
-    @num_wrong == 3
   end
 
   def picture_status # draws picture based on @num_wrong
