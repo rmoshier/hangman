@@ -47,8 +47,9 @@ class Hangman
       evaluate_guess(letter)
       picture_status
       letter_status
-      game_ends
+      # game_ends
     end
+    game_ends
   end
 
   def same_guess(letter) # evaluates whether or not letter is in word
@@ -104,6 +105,7 @@ class Hangman
       puts "|     |      "
       puts "|     |      "
       puts "|     |      "
+      puts "|     |      "
       puts "| ____|___   "
     end
     if @num_wrong == 2
@@ -126,14 +128,14 @@ class Hangman
       puts "|     |      "
       puts "| ____|___   "
     end
-    guess_letter
+    # guess_letter
   end
 
   def game_ends # defines end of game
       if display_word == @word
-        puts "#{'CONGRATULATIONS! YOU WON!'}".light_magenta.blink
+        puts "#{'CONGRATULATIONS! YOU WON!'.light_magenta}"
       else
-        puts "#{'GAME OVER. YOU ARE A BIG LOSER.'}".red.blink
+        puts "#{'GAME OVER. YOU ARE A BIG LOSER.'.red}"
         puts "The word was #{@word.yellow}!"
       end
   end
